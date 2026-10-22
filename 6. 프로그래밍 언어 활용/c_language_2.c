@@ -8,8 +8,8 @@
  * 
  * 용어/개념 물어보기(서술형): 1회
  * 정렬 알고리즘: 1회 
- * 단순 => 계산형: 3회, 재귀형: 2회, 추론형: 1회, 구조체: 1회
- * 복잡 => 배열: 1회
+ * 단순 => 계산형: 4회, 재귀형: 2회, 추론형: 1회, 구조체: 1회, case 문: 1회
+ * 복잡 => 배열: 1회, 증감 연산자: 1회
  * 포인터 => 문자열: 4회, 구조체: 1회, 배열: 2회, 구조체&화살표: 1회
  * 이중 포인터 => 배열: 1회
  * 
@@ -250,5 +250,114 @@ int main(){
 
     // 2진수를 10진수로 변환하는 코드이며.. 여기에슨 10진수 값이 출력됨
     printf("%d", sum);
+    return 0;
+}
+
+
+
+/** 빈칸 채워넣기.. 단순 반복문 => 반복문에 넣자 **/
+int main(){
+    int n[5]={5, 4, 3, 2, 1};
+    int i;
+
+    for(i=0; i<5; i++){
+        printf('%d', n[(i + 1)%5]);
+    }
+    return 0;
+}
+
+
+/** 단순.. case 문 => 다른 언어 case문과 비슷하다:
+    break 없으면 거기서 아래까지 쭈욱 실행함 **/
+int main(){
+    int n[3]={73, 95, 82};
+    int i, sum=0;
+
+    // 73 + 95 + 82 = 250
+    for(i=0; i<3; i++){
+        sum+=n[i];
+    }
+
+    // 나누기.. 나머지 남기지 않음: 250/30 = 8
+    // case 8에서 쭈욱 걸린다: "BCD"
+    switch(sum/30){
+        case 10:
+        case 9: printf("A");
+        case 8: printf("B");
+        case 7:
+        case 6: printf("C");
+        default: printf("D");
+    }
+    return 0;
+}
+
+
+
+/** 증감 연산자
+    전위 증가: ++a => 증가 후 값 사용 
+    후위 증가: a++ => 값 사용 후 증가 **/
+#define MAX_SIZE 10
+
+int isWhat[MAX_SIZE];
+int point=-1;
+
+// -1이 될 경우 "빔"이 참이됨
+int isEmpty(){
+    if(point==-1) return 1;
+    return 0;
+}
+
+// 10될 경우 "참"이 참이됨
+int isFull(){
+    if(point==10) return 1;
+    return 0;
+}
+
+void into(int num){
+    // 10이 넘으면 Full 출력하고
+    if(point>=10) printf("Full");
+    // 아니면, isWhat 배열에 idx 올린 곳에 num 배치
+    isWhat[++point]=num;
+}
+
+int take(){
+    // 빔이면 Empty 출력
+    if(isEmpty()==1) printf("Empty");
+    // 아니면 point 위치 반환 후 -=1 함
+    return isWhat[point--];
+}
+
+int main(){
+    // 각각 보자:
+    // isWhat 배열은: 10개의 빈 공간, point = -1.. point = 0
+    // isWhat 0번째에 5 저장
+    into(5);
+
+    // isWhat 1번쨰에 2 저장, point는 현재 1
+    into(2);
+
+    // point가 -1 될 때까지 실행
+    while(!isEmpty()){
+        // isWhat[1]인 값 반환 => 출력: 2, 이후 point는 0이 됨
+        printf("%d", take());
+        // isWhat 1번째에 4, 2번째에 1 넣음. point는 2
+        into(4);
+        into(1);
+
+        // isWhat[2] = 1 출력, point = 1
+        printf("%d", take());
+        // isWhat[2] = 3 할당, point = 2
+        into(3);
+
+        // 각각 isWhat[2], isWhat[1] 값 출력 => 3, 4.. point는 0
+        printf("%d", take());
+        printf("%d", take());
+        // isWhat[1] = 6, point = 1
+        into(6);
+
+        // isWhat[1], isWhat[0] 값 출력 => 6, 5 .. poiont는 -1 => break 됨
+        printf("%d", take());
+        printf("%d", take());        
+    }
     return 0;
 }
